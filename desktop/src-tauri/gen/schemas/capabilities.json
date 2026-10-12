@@ -1,1 +1,0 @@
-{"default":{"identifier":"default","description":"Local desktop permissions","local":true,"windows":["main"],"permissions":["core:default","dialog:allow-open","dialog:allow-save"]}}

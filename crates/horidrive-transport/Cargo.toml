@@ -18,6 +18,7 @@ rcgen = "0.14"
 keyring = { version = "3", features = ["windows-native", "apple-native", "sync-secret-service"] }
 base64 = "0.22"
 tracing.workspace = true
+mdns-sd = "0.21"
 
 [dev-dependencies]
 tempfile.workspace = true

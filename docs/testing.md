@@ -17,7 +17,19 @@
 - BLAKE3 块不一致、CAS 配额不足、双节点加密传输与删除传播。
 - 并发编辑保留两个副本；未授权证书被拒绝；撤销授权后的现有连接拒绝。
 
-1 GiB+ 测试需显式执行 `cargo test -p horidrive-core -- --ignored`，会临时写入及导出约 1.004 GiB 的文件。实际结果在运行后追加。
+1 GiB+ 测试需显式执行 `cargo test -p horidrive-core -- --ignored`，会临时写入及导出约 1.004 GiB 的文件。
+
+## 后续已运行验证
+
+- 1.004 GiB 实际文件流式索引与导出测试通过。
+- 真实两个独立 CLI 节点进程：公开证书配对、中文 / 特殊字符 / 空文件、并发修改、删除 tombstone、配额拒绝与重试、重启、远程列表 / 按需下载全部通过。
+- 两节点在第一个 4 MiB 块已校验后被强制终止；重新启动只传剩余 8 MiB，12 MiB 文件完整恢复。上传配额失败重试也验证不重复发送已校验块。
+- 安装 journal 恢复、损坏替换保留原文件、Windows junction 拦截、大小写别名拦截、历史与自动替换备份上限、主动删除保留、notify 真实写入监听通过。
+- 取消发生在限速等待期间；远端不出现半成品文件；后续同步复用分块、重新发送流量为 0 的测试通过。
+- mDNS 真实公告并解析到本机网络地址的显式测试通过（5 秒发现窗口）。它不代表已验收所有网络 / 防火墙条件。
+- Rust default-members 与 Tauri desktop 的 Clippy `-D warnings` 均通过；TypeScript 与 Vite production build 通过。
+- 实际 Tauri 窗口启动、本机真实容量读取、界面新建文件夹、系统文件选择框导入及磁盘内容核对通过。后续 UI 验收被 Windows 安全中心的测试进程网络提示挡住；代理没有操作该系统安全提示。
+- 本机 GNU / debug Windows NSIS 安装包已实际生成，未签名；存在 GNU 链接器的 manifest 合并警告。本机 MSVC 缺失，正式 MSVC / macOS 编译由 GitHub Actions 工作流提供，只有实际完成后才记录通过。
 
 ## 尚未完成的验收
 

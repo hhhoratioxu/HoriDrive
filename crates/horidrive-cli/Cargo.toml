@@ -18,3 +18,9 @@ horidrive-daemon.workspace = true
 clap = { version = "4", features = ["derive"] }
 tracing-subscriber.workspace = true
 
+[dev-dependencies]
+blake3.workspace = true
+tempfile.workspace = true
+horidrive-storage.workspace = true
+keyring = { version = "3", features = ["windows-native", "apple-native", "sync-secret-service"] }
+
