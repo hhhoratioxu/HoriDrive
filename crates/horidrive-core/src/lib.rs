@@ -653,6 +653,9 @@ impl Core {
         {
             bail!("Invalid remote revision");
         }
+        // Download may take minutes. Re-index writes made since the manifest snapshot
+        // before comparing clocks, so an offline edit is retained as a conflict.
+        self.scan()?;
         let local = self.store.entry(&remote.path)?;
         let Some(local) = local else {
             self.install(remote)?;
@@ -769,6 +772,36 @@ mod tests {
         assert_eq!(fs::read(a.root.join("x"))?, fs::read(b.root.join("x"))?);
         assert!(a.list("")?.iter().any(|f| f.name.contains("conflict")));
         assert!(b.list("")?.iter().any(|f| f.name.contains("conflict")));
+        Ok(())
+    }
+    #[test]
+    fn write_during_download_is_detected_before_install() -> Result<()> {
+        let t = tempfile::tempdir()?;
+        let mut a = Core::open(&t.path().join("a"))?;
+        let mut b = Core::open(&t.path().join("b"))?;
+        fs::write(a.root.join("x"), "base")?;
+        let base = a.scan()?.remove(0);
+        for hash in &base.blocks {
+            b.store.put_block(hash, &a.store.block(hash)?)?;
+        }
+        b.apply(&base)?;
+        fs::write(b.root.join("x"), "remote edit")?;
+        let remote = b.scan()?.into_iter().find(|e| e.path == "x").unwrap();
+        for hash in &remote.blocks {
+            a.store.put_block(hash, &b.store.block(hash)?)?;
+        }
+        fs::write(a.root.join("x"), "offline edit while downloading")?;
+        a.apply(&remote)?;
+        let content = a
+            .list("")?
+            .into_iter()
+            .filter(|e| !e.directory)
+            .map(|e| fs::read_to_string(a.root.join(e.path)))
+            .collect::<std::io::Result<Vec<_>>>()?;
+        assert!(content
+            .iter()
+            .any(|s| s == "offline edit while downloading"));
+        assert!(content.iter().any(|s| s == "remote edit"));
         Ok(())
     }
     #[test]

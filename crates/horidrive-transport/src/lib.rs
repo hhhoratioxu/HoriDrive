@@ -332,7 +332,6 @@ async fn respond(
                 serde_json::Value::Null
             }
             Request::Apply { entry } => {
-                c.scan()?;
                 serde_json::json!(c.apply(&entry)?)
             }
         };
