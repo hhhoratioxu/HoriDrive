@@ -1,0 +1,20 @@
+[package]
+name = "horidrive-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+blake3.workspace = true
+uuid.workspace = true
+horidrive-storage.workspace = true
+notify = "8"
+fs2 = "0.4"
+base64 = "0.22"
+
+[dev-dependencies]
+tempfile.workspace = true
+

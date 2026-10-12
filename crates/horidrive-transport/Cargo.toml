@@ -1,0 +1,24 @@
+[package]
+name = "horidrive-transport"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+blake3.workspace = true
+tokio.workspace = true
+horidrive-core.workspace = true
+horidrive-storage.workspace = true
+quinn = { version = "0.11", default-features = false, features = ["runtime-tokio", "rustls-ring"] }
+rustls = { version = "0.23", default-features = false, features = ["ring", "std"] }
+rcgen = "0.14"
+keyring = { version = "3", features = ["windows-native", "apple-native", "sync-secret-service"] }
+base64 = "0.22"
+tracing.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+

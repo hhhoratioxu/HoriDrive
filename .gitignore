@@ -1,0 +1,13 @@
+/target/
+**/node_modules/
+desktop/dist/
+**/.horidrive/
+*.log
+*.pfx
+*.key
+*.pem
+.env*
+/test-results/
+/artifacts/
+*.local
+
