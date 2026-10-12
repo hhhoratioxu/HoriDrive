@@ -44,3 +44,6 @@
 - GNU debug NSIS 本机静默安装返回 0，包含主程序、卸载程序及 WebView2Loader.dll；安装目录中的程序在独立测试根目录实际启动，响应正常且创建 SQLite 索引。测试安装目录位于工作目录内。
 - 本机下载 Actions artifact 的连接停滞，未把未下载的文件声称为本机运行通过；发行工作流增加了直接向既有 Release 草稿上传成品及 SHA-256 校验清单的步骤。最终资产的 `BUILD-平台.json` 记录具体源码提交、target、release profile 和哈希。
 - macOS 构建成功不代表已经在真实 Mac 上完成安装、Keychain 配对或桌面操作验收。
+- [最终发行资产工作流](https://github.com/hhhoratioxu/HoriDrive/actions/runs/38224444375) 三个平台全部成功。最终成品编译源码提交为 `e09f4bb9fb30643d978c16ca4e015f04a128e9e2`（相对上一轮仅增加发行打包脚本与工作流，不改变应用源码）；该提交的 [CI](https://github.com/hhhoratioxu/HoriDrive/actions/runs/38224440281) 也通过。
+- Windows MSVC 优化版安装包及 CLI ZIP 从 Release 草稿实际下载，两者 SHA-256 与构建清单一致。Windows 安装返回 0；安装后的主程序真实启动且响应正常，SQLite 索引创建成功。本机发行包约 4.23 MiB；未签名。
+- 当前系统网络权限提示仍覆盖界面，后续交互验收与干净截图待人工处理该提示后补齐；已验证的文件操作和构建结果不受此限制。
