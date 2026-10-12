@@ -149,6 +149,9 @@ pub fn revoke(core: &Core, id: &str) -> Result<()> {
         .set_setting("peers", &serde_json::to_string(&list)?)
 }
 pub fn read_public(path: &Path) -> Result<PublicIdentity> {
+    if std::fs::metadata(path)?.len() > 32768 {
+        bail!("Identity file too large");
+    }
     let data = std::fs::read(path)?;
     if data.len() > 32768 {
         bail!("Identity file too large");
