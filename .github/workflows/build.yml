@@ -1,10 +1,15 @@
 name: Desktop builds
 on:
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Optional existing release draft to receive verified build assets'
+        required: false
+        type: string
   push:
     tags: ['v*']
 permissions:
-  contents: read
+  contents: write
 jobs:
   build:
     strategy:
@@ -23,6 +28,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
@@ -35,9 +42,20 @@ jobs:
       - run: npm run tauri build -- --target ${{ matrix.target }} --bundles ${{ matrix.bundle }}
         working-directory: desktop
       - run: cargo build --locked --release -p horidrive-cli --target ${{ matrix.target }}
+      - name: Package release assets with hashes
+        run: python scripts/package-release.py ${{ matrix.target }} release-assets
+      - name: Upload to existing release draft
+        if: github.event_name == 'workflow_dispatch' && inputs.release_tag != ''
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: gh release upload "$RELEASE_TAG" release-assets/* --clobber
       - uses: actions/upload-artifact@v4
         with:
           name: HoriDrive-${{ matrix.target }}
           path: |
             target/${{ matrix.target }}/release/bundle/**
             target/${{ matrix.target }}/release/horidrive*
+            release-assets/**

@@ -9,6 +9,7 @@ desktop/dist/
 .env*
 /test-results/
 /artifacts/
+/release-assets/
 /desktop/src-tauri/gen/
 *.local
 
