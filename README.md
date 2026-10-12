@@ -2,6 +2,9 @@
 
 **Your Cloud. Your Rules.**
 
+[![CI](https://github.com/hhhoratioxu/HoriDrive/actions/workflows/ci.yml/badge.svg)](https://github.com/hhhoratioxu/HoriDrive/actions/workflows/ci.yml)
+[下载预览版](https://github.com/hhhoratioxu/HoriDrive/releases) · [阶段验收与路线](docs/roadmap.md)
+
 开源、Local-first 的私人云盘。文件保存在自己的 Windows / Mac / NAS 磁盘上，不需要购买 VPS 或存储套餐。主节点离线时，只有已下载的本地文件可用。
 
 ## 当前版本：0.1.0 Preview

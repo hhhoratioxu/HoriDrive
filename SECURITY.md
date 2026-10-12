@@ -1,6 +1,6 @@
 # 安全模型
 
-HoriDrive 0.1 是开发预览版，没有独立安全审计。请通过 GitHub 仓库的私密安全报告渠道反馈可复现的问题；如果渠道不可用，先在 issue 中请求私密联系渠道，不公开文件、凭据或利用细节。
+HoriDrive 0.1 是开发预览版，没有独立安全审计。仓库已启用 [GitHub 私密安全报告](https://github.com/hhhoratioxu/HoriDrive/security/advisories/new)，请在这里反馈可复现的问题；如果渠道不可用，先在 issue 中请求私密联系渠道，不公开文件、凭据或利用细节。
 
 ## 已实现
 

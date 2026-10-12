@@ -35,3 +35,12 @@
 ## 尚未完成的验收
 
 真实物理磁盘耗尽、跨 OS 权限拒绝注入、物理局域网 1 / 2.5 Gbps 基准、长时间后台运行、macOS 安装启动、移动端、断电级文件系统恢复。自动化的配额拒绝不等于真实磁盘耗尽；同机 QUIC 测试不等于真实跨网验证。
+
+## 公开 CI 与发行构建
+
+- 最终应用源码常规检查：18 项自动化测试通过；另行运行的 1.004 GiB 和真实 mDNS 专项各 1 项通过，共 20 项已实际运行的测试。
+- [Windows MSVC / macOS CI](https://github.com/hhhoratioxu/HoriDrive/actions/runs/38223315891) 均成功，包括 Rustfmt、Clippy、各自适用的 Rust 测试、npm ci、TypeScript / Vite build。Windows 独立 CLI 进程与 Credential Manager 测试通过；macOS 的独立进程凭据测试明确未运行（该测试限 Windows），其传输测试使用内存中的身份。
+- [三平台 release profile 构建](https://github.com/hhhoratioxu/HoriDrive/actions/runs/38223316573) 成功：Windows x64 MSVC NSIS、macOS ARM64 / Intel DMG 以及各平台 CLI。该轮源码提交为 `d602ebbbb795554a5dd598be554ca4ed839db4ba`。
+- GNU debug NSIS 本机静默安装返回 0，包含主程序、卸载程序及 WebView2Loader.dll；安装目录中的程序在独立测试根目录实际启动，响应正常且创建 SQLite 索引。测试安装目录位于工作目录内。
+- 本机下载 Actions artifact 的连接停滞，未把未下载的文件声称为本机运行通过；发行工作流增加了直接向既有 Release 草稿上传成品及 SHA-256 校验清单的步骤。最终资产的 `BUILD-平台.json` 记录具体源码提交、target、release profile 和哈希。
+- macOS 构建成功不代表已经在真实 Mac 上完成安装、Keychain 配对或桌面操作验收。
